@@ -18,7 +18,6 @@
         font-family: system-ui, sans-serif;
         text-align: center;
         padding: 24px;
-        margin: 0;
       }
       img {
         max-width: 260px;
@@ -35,9 +34,6 @@
         cursor: pointer;
         margin-top: 20px;
       }
-      button:hover {
-        background: #1fc990;
-      }
       .card {
         background: #111a2e;
         border-radius: 16px;
@@ -45,16 +41,19 @@
         margin-top: 20px;
         border: 1px solid rgba(255,255,255,0.1);
       }
-      .loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 50vh;
-      }
     </style>
   </head>
   <body>
-    <div id="app" class="loading">Loading...</div>
+    <h1>👽 Happy New Year 2026</h1>
+    <p>Your alien friend beams you a joyful, prosperous resolution.</p>
+
+    <img src="alien.png" alt="Alien" />
+
+    <button onclick="generate()">✨ Give me a 2026 Resolution</button>
+
+    <div id="card" class="card" style="display:none;">
+      <h3 id="text"></h3>
+    </div>
 
     <!-- CRITICAL: Load Farcaster Mini App SDK -->
     <script type="module">
@@ -73,39 +72,15 @@
         "Invite more play into your days."
       ];
 
-      function generate() {
+      window.generate = function() {
         const r = resolutions[Math.floor(Math.random() * resolutions.length)];
         document.getElementById("text").textContent = r;
         document.getElementById("card").style.display = "block";
       }
 
-      // Initialize the app
-      async function init() {
-        // Set up the main content
-        document.getElementById("app").innerHTML = `
-          <h1>👽 Happy New Year 2026</h1>
-          <p>Your alien friend beams you a joyful, prosperous resolution.</p>
-          <img src="alien.png" alt="Alien" />
-          <button onclick="window.generateResolution()">✨ Give me a 2026 Resolution</button>
-          <div id="card" class="card" style="display:none;">
-            <h3 id="text"></h3>
-          </div>
-        `;
-        
-        // Make generate function available globally
-        window.generateResolution = generate;
-
-        // CRITICAL: Tell Farcaster the app is ready and hide splash screen
-        // Without this call, users will see an infinite loading screen!
-        await sdk.actions.ready();
-      }
-
-      // Start the app when DOM is ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        init();
-      }
+      // CRITICAL: Tell Farcaster the app is ready and hide splash screen
+      // Without this call, users will see an infinite loading screen!
+      sdk.actions.ready();
     </script>
   </body>
 </html>
