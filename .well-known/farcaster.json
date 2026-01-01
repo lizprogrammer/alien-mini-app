@@ -6,12 +6,8 @@
   },
   "frame": {
     "version": "1",
-    "name": "Example Frame",
+    "name": "Alien New Year 2026",
     "iconUrl": "https://alien-mini-app.vercel.app/alien.png",
-    "homeUrl": "https://alien-mini-app.vercel.app",
-    "imageUrl": "https://alien-mini-app.vercel.app/alien.png",
-    "buttonTitle": "Check this out",
-    "splashImageUrl": "https://alien-mini-app.vercel.app/alien.png",
-    "splashBackgroundColor": "#eeccff",
+    "homeUrl": "https://alien-mini-app.vercel.app"
   }
 }
