@@ -1,6 +1,6 @@
 {
   "name": "Alien New Year 2026",
   "description": "Your alien friend beams you a joyful, prosperous 2026 resolution.",
-  "icon": "https://YOUR-DOMAIN/alien.png",
-  "url": "https://YOUR-DOMAIN"
+  "icon": "https://alien-mini-app.vercel.app/alien.png",
+  "url": "https://alien-mini-app.vercel.app"
 }
