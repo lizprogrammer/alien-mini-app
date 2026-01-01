@@ -1,7 +1,17 @@
 {
-  "name": "Alien New Year 2026",
-  "description": "Your alien friend beams you a joyful, prosperous 2026 resolution.",
-  "icon": "https://alien-mini-app.vercel.app/alien.png",
-  "url": "https://alien-mini-app.vercel.app",
-  "version": "1"
+  "accountAssociation": {
+    "header": "eyJmaWQiOjIwMDY4NDEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhkMTA5NjEzN0EwMzNDM2E2Q0EyMDY4MEMwYmIxNmRiYjA1Mjk3RUEyIn0",
+    "payload": "eyJkb21haW4iOiJhbGllbi1taW5pLWFwcC52ZXJjZWwuYXBwIn0",
+    "signature": "Y4kViG0Hyr9IZSL+TFEg7tG4WkNJ6Fq4niMrwpHSPYVblsgJbr2oAdzTQR4JuxaMbQI/lA2IOSmo5/U6moV1rhs="
+  },
+  "frame": {
+    "version": "1",
+    "name": "Example Frame",
+    "iconUrl": "https://alien-mini-app.vercel.app/alien.png",
+    "homeUrl": "https://alien-mini-app.vercel.app",
+    "imageUrl": "https://alien-mini-app.vercel.app/alien.png",
+    "buttonTitle": "Check this out",
+    "splashImageUrl": "https://alien-mini-app.vercel.app/alien.png",
+    "splashBackgroundColor": "#eeccff",
+  }
 }
