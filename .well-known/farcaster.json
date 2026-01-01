@@ -4,10 +4,18 @@
     "payload": "eyJkb21haW4iOiJhbGllbi1taW5pLWFwcC52ZXJjZWwuYXBwIn0",
     "signature": "Y4kViG0Hyr9IZSL+TFEg7tG4WkNJ6Fq4niMrwpHSPYVblsgJbr2oAdzTQR4JuxaMbQI/lA2IOSmo5/U6moV1rhs="
   },
-  "frame": {
+  "miniapp": {
     "version": "1",
     "name": "Alien New Year 2026",
     "iconUrl": "https://alien-mini-app.vercel.app/alien.png",
-    "homeUrl": "https://alien-mini-app.vercel.app"
+    "homeUrl": "https://alien-mini-app.vercel.app",
+    "splashImageUrl": "https://alien-mini-app.vercel.app/alien.png",
+    "splashBackgroundColor": "#020816",
+    "imageUrl": "https://alien-mini-app.vercel.app/alien.png",
+    "buttonTitle": "Get Resolution ✨",
+    "subtitle": "Your cosmic companion for 2026",
+    "description": "Get personalized New Year resolutions from your friendly alien companion. Start your year with cosmic wisdom!",
+    "primaryCategory": "social",
+    "tags": ["new-year", "resolutions", "fun", "social"]
   }
 }
