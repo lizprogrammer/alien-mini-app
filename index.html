@@ -2,13 +2,15 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <meta property="fc:frame" content="vNext" />
-    <meta property="fc:frame:image" content="https://alien-mini-app.vercel.app/alien.png" />
-    <meta property="fc:frame:button:1" content="Get Resolution" />
-    <meta property="fc:frame:post_url" content="https://alien-mini-app.vercel.app" />
-    
-    <title>Alien New Year 2026</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Alien New Year 2026</title>
+    
+    <!-- CRITICAL: Farcaster Mini App Embed Meta Tag -->
+    <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Get Resolution ✨","action":{"type":"launch_miniapp","name":"Alien New Year 2026","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#020816"}}}' />
+    
+    <!-- For backward compatibility -->
+    <meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Get Resolution ✨","action":{"type":"launch_frame","name":"Alien New Year 2026","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#020816"}}}' />
+    
     <style>
       body {
         background-color: #020816;
@@ -16,6 +18,7 @@
         font-family: system-ui, sans-serif;
         text-align: center;
         padding: 24px;
+        margin: 0;
       }
       img {
         max-width: 260px;
@@ -32,6 +35,9 @@
         cursor: pointer;
         margin-top: 20px;
       }
+      button:hover {
+        background: #1fc990;
+      }
       .card {
         background: #111a2e;
         border-radius: 16px;
@@ -39,21 +45,21 @@
         margin-top: 20px;
         border: 1px solid rgba(255,255,255,0.1);
       }
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 50vh;
+      }
     </style>
   </head>
   <body>
-    <h1>👽 Happy New Year 2026</h1>
-    <p>Your alien friend beams you a joyful, prosperous resolution.</p>
+    <div id="app" class="loading">Loading...</div>
 
-    <img src="alien.png" alt="Alien" />
+    <!-- CRITICAL: Load Farcaster Mini App SDK -->
+    <script type="module">
+      import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
-    <button onclick="generate()">✨ Give me a 2026 Resolution</button>
-
-    <div id="card" class="card" style="display:none;">
-      <h3 id="text"></h3>
-    </div>
-
-    <script>
       const resolutions = [
         "Say yes to one new adventure each month.",
         "Protect one hour a week for pure joy.",
@@ -72,7 +78,34 @@
         document.getElementById("text").textContent = r;
         document.getElementById("card").style.display = "block";
       }
+
+      // Initialize the app
+      async function init() {
+        // Set up the main content
+        document.getElementById("app").innerHTML = `
+          <h1>👽 Happy New Year 2026</h1>
+          <p>Your alien friend beams you a joyful, prosperous resolution.</p>
+          <img src="alien.png" alt="Alien" />
+          <button onclick="window.generateResolution()">✨ Give me a 2026 Resolution</button>
+          <div id="card" class="card" style="display:none;">
+            <h3 id="text"></h3>
+          </div>
+        `;
+        
+        // Make generate function available globally
+        window.generateResolution = generate;
+
+        // CRITICAL: Tell Farcaster the app is ready and hide splash screen
+        // Without this call, users will see an infinite loading screen!
+        await sdk.actions.ready();
+      }
+
+      // Start the app when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
     </script>
   </body>
 </html>
-
