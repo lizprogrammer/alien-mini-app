@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Alien New Year 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        background-color: #020816;
+        color: #f5f5ff;
+        font-family: system-ui, sans-serif;
+        text-align: center;
+        padding: 24px;
+      }
+      img {
+        max-width: 260px;
+        margin-top: 20px;
+      }
+      button {
+        background: #27e0a3;
+        color: #04101b;
+        border: none;
+        border-radius: 999px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+      .card {
+        background: #111a2e;
+        border-radius: 16px;
+        padding: 16px;
+        margin-top: 20px;
+        border: 1px solid rgba(255,255,255,0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>👽 Happy New Year 2026</h1>
+    <p>Your alien friend beams you a joyful, prosperous resolution.</p>
+
+    <img src="alien.png" alt="Alien" />
+
+    <button onclick="generate()">✨ Give me a 2026 Resolution</button>
+
+    <div id="card" class="card" style="display:none;">
+      <h3 id="text"></h3>
+    </div>
+
+    <script>
+      const resolutions = [
+        "Say yes to one new adventure each month.",
+        "Protect one hour a week for pure joy.",
+        "Celebrate tiny wins every Friday.",
+        "Choose rest without guilt.",
+        "Invest in your future self with love.",
+        "Do one bold thing each week.",
+        "Create space for abundance to flow.",
+        "Speak to yourself with softness.",
+        "Let go of one draining habit.",
+        "Invite more play into your days."
+      ];
+
+      function generate() {
+        const r = resolutions[Math.floor(Math.random() * resolutions.length)];
+        document.getElementById("text").textContent = r;
+        document.getElementById("card").style.display = "block";
+      }
+    </script>
+  </body>
+</html>
+
