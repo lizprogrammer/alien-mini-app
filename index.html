@@ -3,20 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Alien New Year 2026</title>
-    
+    <title>Helia’s Cosmic Greetings</title>
+
     <!-- CRITICAL: Farcaster Mini App Embed Meta Tag -->
-    <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Get Resolution ✨","action":{"type":"launch_miniapp","name":"Alien New Year 2026","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#020816"}}}' />
-    
+    <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Receive Transmission ✨","action":{"type":"launch_miniapp","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#020816"}}}' />
+
     <!-- For backward compatibility -->
-    <meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Get Resolution ✨","action":{"type":"launch_frame","name":"Alien New Year 2026","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#020816"}}}' />
-    
+    <meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Receive Transmission ✨","action":{"type":"launch_frame","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#020816"}}}' />
+
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
       body {
         background-color: #020816;
         color: #f5f5ff;
@@ -28,21 +24,9 @@
         justify-content: center;
         padding: 16px;
       }
-      h1 {
-        font-size: 1.5rem;
-        margin-bottom: 8px;
-      }
-      p {
-        font-size: 0.9rem;
-        margin-bottom: 12px;
-        opacity: 0.9;
-      }
-      img {
-        max-width: 180px;
-        width: 100%;
-        margin: 12px auto;
-        display: block;
-      }
+      h1 { font-size: 1.5rem; margin-bottom: 8px; }
+      p { font-size: 0.9rem; margin-bottom: 12px; opacity: 0.9; }
+      img { max-width: 180px; width: 100%; margin: 12px auto; display: block; }
       button {
         background: #27e0a3;
         color: #04101b;
@@ -63,49 +47,27 @@
         border: 1px solid rgba(255,255,255,0.1);
         max-width: 400px;
       }
-      .card h3 {
-        font-size: 1rem;
-        line-height: 1.4;
-        font-weight: 500;
-      }
-      
-      /* Larger screens */
+      .card h3 { font-size: 1rem; line-height: 1.4; font-weight: 500; }
+
       @media (min-height: 600px) {
-        h1 {
-          font-size: 2rem;
-          margin-bottom: 12px;
-        }
-        p {
-          font-size: 1rem;
-          margin-bottom: 16px;
-        }
-        img {
-          max-width: 240px;
-          margin: 16px auto;
-        }
-        button {
-          padding: 12px 24px;
-          font-size: 1rem;
-          margin: 16px auto;
-        }
-        .card {
-          padding: 16px;
-          margin: 16px auto 0;
-        }
-        .card h3 {
-          font-size: 1.1rem;
-        }
+        h1 { font-size: 2rem; margin-bottom: 12px; }
+        p { font-size: 1rem; margin-bottom: 16px; }
+        img { max-width: 240px; margin: 16px auto; }
+        button { padding: 12px 24px; font-size: 1rem; margin: 16px auto; }
+        .card { padding: 16px; margin: 16px auto 0; }
+        .card h3 { font-size: 1.1rem; }
       }
     </style>
   </head>
+
   <body>
     <div>
-      <h1>👽 Happy New Year 2026</h1>
-      <p>Your alien friend beams you a joyful, prosperous resolution.</p>
+      <h1 id="holiday-title">👽 Cosmic Greetings from Helia</h1>
+      <p>Helia beams you a fresh transmission of interstellar encouragement.</p>
 
-      <img src="alien.png" alt="Alien" />
+      <img src="alien.png" alt="Helia the Alien" />
 
-      <button onclick="generate()">✨ Give me a 2026 Resolution</button>
+      <button onclick="generate()">✨ Receive Transmission</button>
 
       <div id="card" class="card" style="display:none;">
         <h3 id="text"></h3>
@@ -116,27 +78,48 @@
     <script type="module">
       import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
-      const resolutions = [
-        "Say yes to one new adventure each month.",
-        "Protect one hour a week for pure joy.",
-        "Celebrate tiny wins every Friday.",
-        "Choose rest without guilt.",
-        "Invest in your future self with love.",
-        "Do one bold thing each week.",
-        "Create space for abundance to flow.",
-        "Speak to yourself with softness.",
-        "Let go of one draining habit.",
-        "Invite more play into your days."
-      ];
+      // --- Detect Holiday or Day of Week ---
+      function getHolidayOrWeekday() {
+        const d = new Date();
+        const month = d.getMonth() + 1;
+        const day = d.getDate();
+        const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
 
-      window.generate = function() {
-        const r = resolutions[Math.floor(Math.random() * resolutions.length)];
-        document.getElementById("text").textContent = r;
-        document.getElementById("card").style.display = "block";
+        // Fixed-date holidays
+        if (month === 1 && day === 1) return "New Year";
+        if (month === 2 && day === 14) return "Valentine's Day";
+        if (month === 7 && day === 4) return "Independence Day";
+        if (month === 10 && day === 31) return "Halloween";
+        if (month === 12 && day === 25) return "Christmas";
+
+        // Default fallback: weekday greeting
+        return weekday;
       }
 
-      // CRITICAL: Tell Farcaster the app is ready and hide splash screen
-      // Without this call, users will see an infinite loading screen!
+      document.getElementById("holiday-title").textContent =
+        "👽 Happy " + getHolidayOrWeekday() + " from Helia!";
+
+      // --- Alien-Themed Inspirational Messages ---
+      const messages = [
+        "Helia says: Even stars need darkness to shine — your glow is coming online.",
+        "Transmission from Helia: You are stardust with purpose. Proceed boldly.",
+        "Helia beams: Tiny cosmic steps still move you across galaxies.",
+        "Helia whispers: Your orbit is your own — no need to match anyone else’s trajectory.",
+        "Incoming signal: You’re more powerful than a supernova on its best day.",
+        "Helia notes: Curiosity is your hyperdrive — follow it.",
+        "Cosmic ping: Your energy field is stabilizing beautifully. Keep going.",
+        "Helia transmits: You don’t need to be perfect — just in motion.",
+        "Star‑coded message: You are expanding in all the right directions.",
+        "Helia reminds you: Even meteors take breaks. Rest is part of the mission."
+      ];
+
+      window.generate = function () {
+        const msg = messages[Math.floor(Math.random() * messages.length)];
+        document.getElementById("text").textContent = msg;
+        document.getElementById("card").style.display = "block";
+      };
+
+      // CRITICAL: Tell Farcaster the app is ready
       sdk.actions.ready();
     </script>
   </body>
