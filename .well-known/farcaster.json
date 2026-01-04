@@ -6,7 +6,7 @@
   },
   "miniapp": {
     "version": "1",
-    "name": "Helia Wave",
+    "name": "Cosmic Greetings",
     "iconUrl": "https://alien-mini-app.vercel.app/alien.png",
     "homeUrl": "https://alien-mini-app.vercel.app",
     "splashImageUrl": "https://alien-mini-app.vercel.app/alien.png",
