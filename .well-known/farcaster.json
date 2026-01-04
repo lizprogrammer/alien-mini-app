@@ -3,7 +3,7 @@
     "header": "eyJmaWQiOjIxMDI1OSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDA4NUVlNjgxZTI1NEFhRjg3MzM4NjhjQmQ4OWEyQTljNDU2QTE3NkIifQ",
     "payload": "eyJkb21haW4iOiJhbGllbi1taW5pLWFwcC52ZXJjZWwuYXBwIn0",
     "signature": "uRuT0ZAM5ZYqiFYnwXmGwJ76mu7qXNcs95kBlEsnBcdFmFkRA2mGSumLNs3+FRKNFX1nhcBfF7uiUQdtAQWYyhs="
-  },
+},
   "miniapp": {
     "version": "1",
     "name": "Cosmic Greetings",
