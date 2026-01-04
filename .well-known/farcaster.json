@@ -1,21 +1,19 @@
-{
+  "frame": {
+    "name": "Alien Mini App",
+    "homeUrl": "https://alien-mini-app.vercel.app",
+    "iconUrl": "https://alien-mini-app.vercel.app/icon.png",
+    "version": "1",
+    "imageUrl": "https://alien-mini-app.vercel.app/image.png",
+    "subtitle": "She's random but cute.",
+    "webhookUrl": "https://alien-mini-app.vercel.app/api/webhook",
+    "description": "Little green alien named Helia.  She's so cute.",
+    "splashImageUrl": "https://alien-mini-app.vercel.app/splash.png",
+    "primaryCategory": "social",
+    "splashBackgroundColor": "#39FF14"
+  },
   "accountAssociation": {
     "header": "eyJmaWQiOjIxMDI1OSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDA4NUVlNjgxZTI1NEFhRjg3MzM4NjhjQmQ4OWEyQTljNDU2QTE3NkIifQ",
     "payload": "eyJkb21haW4iOiJhbGllbi1taW5pLWFwcC52ZXJjZWwuYXBwIn0",
     "signature": "uRuT0ZAM5ZYqiFYnwXmGwJ76mu7qXNcs95kBlEsnBcdFmFkRA2mGSumLNs3+FRKNFX1nhcBfF7uiUQdtAQWYyhs="
-  },
-  "miniapp": {
-    "version": "1",
-    "name": "Cosmic Greetings",
-    "iconUrl": "https://alien-mini-app.vercel.app/alien.png",
-    "homeUrl": "https://alien-mini-app.vercel.app",
-    "splashImageUrl": "https://alien-mini-app.vercel.app/alien.png",
-    "splashBackgroundColor": "#39FF14",
-    "imageUrl": "https://alien-mini-app.vercel.app/alien.png",
-    "buttonTitle": "Get Resolution ✨",
-    "subtitle": "Your cosmic companion for 2026",
-    "description": "Get personalized greetings from your friendly alien companion. Start your year with cosmic wisdom!",
-    "primaryCategory": "social",
-    "tags": ["new-year", "resolutions", "fun", "social"]
   }
 }
