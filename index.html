@@ -6,6 +6,7 @@
 <title>Helia’s Cosmic Greetings</title>
 
 <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling","action":{"type":"launch_miniapp","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
+
 <meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling","action":{"type":"launch_frame","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
 
 <style>
@@ -29,22 +30,9 @@
     text-align: center;
   }
 
-  h1 {
-    font-size: 1.6rem;
-    margin-bottom: 6px;
-  }
-
-  .subtitle {
-    font-size: 0.95rem;
-    opacity: 0.85;
-    margin-bottom: 14px;
-  }
-
-  img {
-    width: 180px;
-    max-width: 60%;
-    margin-bottom: 12px;
-  }
+  h1 { font-size: 1.6rem; margin-bottom: 6px; }
+  .subtitle { font-size: 0.95rem; opacity: 0.85; margin-bottom: 14px; }
+  img { width: 180px; max-width: 60%; margin-bottom: 12px; }
 
   /* Bottom fixed button */
   .bottom-bar {
@@ -71,11 +59,9 @@
     cursor: pointer;
   }
 
-  button:active {
-    transform: scale(0.98);
-  }
+  button:active { transform: scale(0.98); }
 
-  /* Modal */
+  /* Modal overlay */
   .overlay {
     position: fixed;
     inset: 0;
@@ -85,10 +71,7 @@
     justify-content: center;
     padding: 20px;
   }
-
-  .overlay.show {
-    display: flex;
-  }
+  .overlay.show { display: flex; }
 
   .message-card {
     background: linear-gradient(180deg, #142044, #0d162f);
@@ -114,19 +97,14 @@
     font-weight: 500;
   }
 
-  .error-text {
+  .error-msg {
     position: fixed;
     bottom: 60px;
     width: 100%;
     text-align: center;
-    color: #ff4d4f;
-    font-size: 0.9rem;
-    opacity: 0.85;
-  }
-
-  .loading {
-    font-style: italic;
-    opacity: 0.7;
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    padding: 0 12px;
   }
 </style>
 </head>
@@ -142,21 +120,22 @@
   <div id="overlay" class="overlay" onclick="closeModal()">
     <div class="message-card" onclick="event.stopPropagation()">
       <div class="message-label">Today’s Transmission</div>
-      <div id="message" class="message-text loading">Receiving transmission...</div>
+      <div id="message" class="message-text">Loading...</div>
     </div>
   </div>
-
-  <!-- Error display -->
-  <div id="error" class="error-text"></div>
 
   <!-- Bottom button -->
   <div class="bottom-bar">
     <button onclick="generate()">Receive Transmission</button>
   </div>
 
+  <!-- Error message -->
+  <div id="error" class="error-msg"></div>
+
   <script type="module">
     import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
+    // Display weekday or holiday
     function getHolidayOrWeekday() {
       const d = new Date();
       const month = d.getMonth() + 1;
@@ -176,32 +155,19 @@
       "Happy " + getHolidayOrWeekday() + " from Helia";
 
     async function generate() {
-      const messageEl = document.getElementById("message");
-      const overlay = document.getElementById("overlay");
-      const errorEl = document.getElementById("error");
-
-      errorEl.textContent = "";
-      messageEl.textContent = "Receiving transmission...";
-      messageEl.classList.add("loading");
-
-      overlay.classList.add("show");
+      document.getElementById("message").textContent = "Receiving transmission…";
+      document.getElementById("overlay").classList.add("show");
+      document.getElementById("error").textContent = "";
 
       try {
-        const res = await fetch('/api/helia');
+        const res = await fetch("/api/helia");
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
         const data = await res.json();
-
-        if (data.error) {
-          errorEl.textContent = data.error;
-          messageEl.textContent = "Helia is recharging. Try again soon.";
-        } else {
-          messageEl.textContent = data.message || "Helia is recharging. Try again soon.";
-        }
+        document.getElementById("message").textContent = data.message || "Helia is recharging. Try again soon.";
       } catch (err) {
-        errorEl.textContent = "Error: Could not reach Helia.";
-        messageEl.textContent = "Helia is recharging. Try again soon.";
+        document.getElementById("message").textContent = "Failed to receive transmission.";
+        document.getElementById("error").textContent = err.message;
         console.error(err);
-      } finally {
-        messageEl.classList.remove("loading");
       }
     }
 
