@@ -11,6 +11,7 @@
 
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
     background: #020816;
     color: #f5f5ff;
@@ -18,6 +19,7 @@
     height: 100vh;
     overflow: hidden;
   }
+
   .app {
     height: 100%;
     display: flex;
@@ -27,20 +29,24 @@
     padding: 16px;
     text-align: center;
   }
+
   h1 {
     font-size: 1.6rem;
     margin-bottom: 6px;
   }
+
   .subtitle {
     font-size: 0.95rem;
     opacity: 0.85;
     margin-bottom: 14px;
   }
+
   img {
     width: 180px;
     max-width: 60%;
     margin-bottom: 12px;
   }
+
   /* Bottom fixed button */
   .bottom-bar {
     position: fixed;
@@ -50,6 +56,7 @@
     padding: 14px 16px 18px;
     background: linear-gradient(to top, #020816 60%, transparent);
   }
+
   button {
     width: 100%;
     max-width: 360px;
@@ -64,9 +71,11 @@
     font-weight: 600;
     cursor: pointer;
   }
+
   button:active {
     transform: scale(0.98);
   }
+
   /* Modal */
   .overlay {
     position: fixed;
@@ -77,9 +86,11 @@
     justify-content: center;
     padding: 20px;
   }
+
   .overlay.show {
     display: flex;
   }
+
   .message-card {
     background: linear-gradient(180deg, #142044, #0d162f);
     border-radius: 18px;
@@ -89,6 +100,7 @@
     width: 100%;
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
   }
+
   .message-label {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -96,15 +108,11 @@
     opacity: 0.7;
     margin-bottom: 10px;
   }
+
   .message-text {
     font-size: 1.05rem;
     line-height: 1.45;
     font-weight: 500;
-    word-wrap: break-word;
-  }
-  .loading {
-    opacity: 0.7;
-    font-style: italic;
   }
 </style>
 </head>
@@ -126,59 +134,27 @@
 
   <!-- Bottom button -->
   <div class="bottom-bar">
-    <button id="generateBtn">Receive Transmission</button>
+    <button onclick="generate()">Receive Transmission</button>
   </div>
 
   <script type="module">
     import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
-    function getHolidayOrWeekday() {
-      const d = new Date();
-      const month = d.getMonth() + 1;
-      const day = d.getDate();
-      const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
-      if (month === 1 && day === 1) return "New Year";
-      if (month === 2 && day === 14) return "Valentine's Day";
-      if (month === 7 && day === 4) return "Independence Day";
-      if (month === 10 && day === 31) return "Halloween";
-      if (month === 12 && day === 25) return "Christmas";
-      return weekday;
-    }
-
-    document.getElementById("holiday-title").textContent =
-      "Happy " + getHolidayOrWeekday() + " from Helia";
-
-    const overlay = document.getElementById("overlay");
-    const messageEl = document.getElementById("message");
-    const generateBtn = document.getElementById("generateBtn");
-
-    async function fetchMessage() {
-      messageEl.textContent = "Receiving transmission…";
-      messageEl.classList.add("loading");
-      overlay.classList.add("show");
-
+    async function generate() {
       try {
-        const res = await fetch("/api/helia");
+        const res = await fetch('/api/helia');
         const data = await res.json();
-
-        if (!res.ok) {
-          messageEl.textContent = "Error: " + (data.error || "Unknown error");
-          messageEl.classList.remove("loading");
-          return;
-        }
-
-        messageEl.textContent = data.message || "No message received";
-        messageEl.classList.remove("loading");
+        document.getElementById("message").textContent = data.message || "Helia is recharging. Try again soon.";
       } catch (err) {
-        messageEl.textContent = "Network error: " + err.message;
-        messageEl.classList.remove("loading");
+        document.getElementById("message").textContent = "Error: Could not reach Helia.";
+        console.error(err);
       }
+      document.getElementById("overlay").classList.add("show");
     }
 
-    window.generate = fetchMessage;
-    window.closeModal = () => overlay.classList.remove("show");
-
-    generateBtn.addEventListener("click", fetchMessage);
+    function closeModal() {
+      document.getElementById("overlay").classList.remove("show");
+    }
 
     sdk.actions.ready();
   </script>
