@@ -114,6 +114,11 @@
     line-height: 1.45;
     font-weight: 500;
   }
+
+  .loading {
+    font-style: italic;
+    opacity: 0.8;
+  }
 </style>
 </head>
 
@@ -128,7 +133,7 @@
   <div id="overlay" class="overlay" onclick="closeModal()">
     <div class="message-card" onclick="event.stopPropagation()">
       <div class="message-label">Today’s Transmission</div>
-      <div id="message" class="message-text"></div>
+      <div id="message" class="message-text loading">Receiving transmission...</div>
     </div>
   </div>
 
@@ -140,45 +145,27 @@
   <script type="module">
     import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
-    function getHolidayOrWeekday() {
-      const d = new Date();
-      const month = d.getMonth() + 1;
-      const day = d.getDate();
-      const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
-
-      if (month === 1 && day === 1) return "New Year";
-      if (month === 2 && day === 14) return "Valentine's Day";
-      if (month === 7 && day === 4) return "Independence Day";
-      if (month === 10 && day === 31) return "Halloween";
-      if (month === 12 && day === 25) return "Christmas";
-
-      return weekday;
-    }
-
-    document.getElementById("holiday-title").textContent =
-      "Happy " + getHolidayOrWeekday() + " from Helia";
-
-    // ----- Call serverless function -----
-    window.generate = async function () {
-      const overlay = document.getElementById("overlay");
+    async function generate() {
+      // Show modal immediately with loading
       const messageEl = document.getElementById("message");
+      messageEl.textContent = "Receiving transmission...";
+      messageEl.classList.add("loading");
+      document.getElementById("overlay").classList.add("show");
 
       try {
         const res = await fetch('/api/helia');
-        if (!res.ok) throw new Error('Failed to fetch transmission');
         const data = await res.json();
         messageEl.textContent = data.message;
+        messageEl.classList.remove("loading");
       } catch (err) {
         messageEl.textContent = "Helia is recharging. Try again soon.";
-        console.error(err);
+        messageEl.classList.remove("loading");
       }
+    }
 
-      overlay.classList.add("show");
-    };
-
-    window.closeModal = function () {
+    function closeModal() {
       document.getElementById("overlay").classList.remove("show");
-    };
+    }
 
     sdk.actions.ready();
   </script>
