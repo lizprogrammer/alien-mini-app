@@ -1,5 +1,8 @@
 // File: api/helia.js
 export default async function handler(req, res) {
+  // Allow cross-origin requests from any origin (needed for Farcaster iframe)
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   try {
     // Only allow GET requests
     if (req.method !== "GET") {
