@@ -174,7 +174,7 @@
       errorEl.textContent = "";
 
       try {
-        const res = await fetch("/api/helia");
+        const res = await fetch("https://alien-mini-app.vercel.app/api/helia");
         console.log("Fetch status:", res.status);
         const data = await res.json();
         console.log("Data from API:", data);
