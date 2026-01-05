@@ -20,23 +20,31 @@
   }
 
   .app {
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* move content toward top */
-    padding: 40px 16px 16px;     /* top spacing */
+    justify-content: flex-start;
+    padding: 60px 16px 16px; /* more top space */
     text-align: center;
   }
 
-  h1 { font-size: 1.6rem; margin-bottom: 6px; }
+  h1 {
+    font-size: 2rem;      /* larger and more prominent */
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
 
-  .subtitle { font-size: 0.95rem; opacity: 0.85; margin-bottom: 14px; }
+  .subtitle {
+    font-size: 1rem;      /* slightly bigger */
+    opacity: 0.85;
+    margin-bottom: 24px;  /* more space before icon */
+  }
 
   img {
-    width: 180px;
+    width: 200px;
     max-width: 60%;
-    margin-bottom: 12px;
+    margin-bottom: 32px;  /* bigger gap between icon and button/modal */
   }
 
   .bottom-bar {
@@ -57,13 +65,14 @@
     color: #04101b;
     border: none;
     border-radius: 999px;
-    padding: 12px;
-    font-size: 1rem;
+    padding: 14px;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
+    transition: transform 0.1s;
   }
 
-  button:active { transform: scale(0.98); }
+  button:active { transform: scale(0.97); }
 
   .overlay {
     position: fixed;
@@ -80,24 +89,33 @@
   .message-card {
     background: linear-gradient(180deg, #142044, #0d162f);
     border-radius: 18px;
-    padding: 20px;
+    padding: 22px;
     border: 1px solid rgba(255,255,255,0.15);
-    max-width: 360px;
+    max-width: 380px;
     width: 100%;
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
   }
 
   .message-label {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     opacity: 0.7;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
-  .message-text { font-size: 1.05rem; line-height: 1.45; font-weight: 500; }
+  .message-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    font-weight: 500;
+  }
 
-  #error { color: #ff7777; font-size: 0.85rem; text-align: center; margin-top: 8px; }
+  #error {
+    color: #ff7777;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 8px;
+  }
 </style>
 </head>
 
@@ -123,8 +141,8 @@
   <script type="module">
     import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
-    document.getElementById("holiday-title").textContent =
-      "Happy " + new Date().toLocaleDateString("en-US", { weekday: "long" }) + " from Helia";
+    const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
+    document.getElementById("holiday-title").textContent = "Happy " + today + " from Helia";
 
     window.generate = async function() {
       const messageEl = document.getElementById("message");
