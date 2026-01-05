@@ -158,23 +158,22 @@
     document.getElementById("holiday-title").textContent =
       "Happy " + getHolidayOrWeekday() + " from Helia";
 
-    const messages = [
-      "Helia says: Even stars need darkness to shine — your glow is coming online.",
-      "Transmission from Helia: You are stardust with purpose. Proceed boldly.",
-      "Helia beams: Tiny cosmic steps still move you across galaxies.",
-      "Helia whispers: Your orbit is your own — no need to match anyone else’s trajectory.",
-      "Incoming signal: You’re more powerful than a supernova on its best day.",
-      "Helia notes: Curiosity is your hyperdrive — follow it.",
-      "Cosmic ping: Your energy field is stabilizing beautifully. Keep going.",
-      "Helia transmits: You don’t need to be perfect — just in motion.",
-      "Star-coded message: You are expanding in all the right directions.",
-      "Helia reminds you: Even meteors take breaks. Rest is part of the mission."
-    ];
+    // ----- Call serverless function -----
+    window.generate = async function () {
+      const overlay = document.getElementById("overlay");
+      const messageEl = document.getElementById("message");
 
-    window.generate = function () {
-      const msg = messages[Math.floor(Math.random() * messages.length)];
-      document.getElementById("message").textContent = msg;
-      document.getElementById("overlay").classList.add("show");
+      try {
+        const res = await fetch('/api/helia');
+        if (!res.ok) throw new Error('Failed to fetch transmission');
+        const data = await res.json();
+        messageEl.textContent = data.message;
+      } catch (err) {
+        messageEl.textContent = "Helia is recharging. Try again soon.";
+        console.error(err);
+      }
+
+      overlay.classList.add("show");
     };
 
     window.closeModal = function () {
