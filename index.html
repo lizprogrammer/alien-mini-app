@@ -10,6 +10,7 @@
 
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
     background: #020816;
     color: #f5f5ff;
@@ -17,6 +18,7 @@
     height: 100vh;
     overflow: hidden;
   }
+
   .app {
     height: 100%;
     display: flex;
@@ -26,9 +28,18 @@
     padding: 16px;
     text-align: center;
   }
+
   h1 { font-size: 1.6rem; margin-bottom: 6px; }
+
   .subtitle { font-size: 0.95rem; opacity: 0.85; margin-bottom: 14px; }
-  img { width: 180px; max-width: 60%; margin-bottom: 12px; }
+
+  img {
+    width: 180px;
+    max-width: 60%;
+    margin-bottom: 12px;
+    background-color: #020816; /* match page background */
+    border-radius: 12px; /* optional, makes edges smooth */
+  }
 
   .bottom-bar {
     position: fixed;
@@ -38,6 +49,7 @@
     padding: 14px 16px 18px;
     background: linear-gradient(to top, #020816 60%, transparent);
   }
+
   button {
     width: 100%;
     max-width: 360px;
@@ -52,6 +64,7 @@
     font-weight: 600;
     cursor: pointer;
   }
+
   button:active { transform: scale(0.98); }
 
   .overlay {
@@ -63,10 +76,10 @@
     justify-content: center;
     padding: 20px;
   }
+
   .overlay.show { display: flex; }
 
   .message-card {
-    position: relative;
     background: linear-gradient(180deg, #142044, #0d162f);
     border-radius: 18px;
     padding: 20px;
@@ -75,22 +88,16 @@
     width: 100%;
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
   }
-  .message-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; margin-bottom: 10px; }
-  .message-text { font-size: 1.05rem; line-height: 1.45; font-weight: 500; }
 
-  .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    background: transparent;
-    border: none;
-    color: #f5f5ff;
-    font-size: 1.4rem;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 0;
+  .message-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+    margin-bottom: 10px;
   }
-  .close-btn:active { transform: scale(0.9); }
+
+  .message-text { font-size: 1.05rem; line-height: 1.45; font-weight: 500; }
 
   #error { color: #ff7777; font-size: 0.85rem; text-align: center; margin-top: 8px; }
 </style>
@@ -105,35 +112,29 @@
 
   <div id="overlay" class="overlay">
     <div class="message-card">
-      <button class="close-btn" id="closeBtn">×</button>
       <div class="message-label">Today’s Transmission</div>
       <div id="message" class="message-text">Loading…</div>
     </div>
   </div>
 
   <div class="bottom-bar">
-    <button id="receiveBtn">Receive Transmission</button>
+    <button onclick="generate()">Receive Transmission</button>
     <div id="error"></div>
   </div>
 
   <script type="module">
     import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
-    // Update title with weekday
     document.getElementById("holiday-title").textContent =
       "Happy " + new Date().toLocaleDateString("en-US", { weekday: "long" }) + " from Helia";
 
-    const messageEl = document.getElementById("message");
-    const overlay = document.getElementById("overlay");
-    const errorEl = document.getElementById("error");
-    const receiveBtn = document.getElementById("receiveBtn");
-    const closeBtn = document.getElementById("closeBtn");
+    window.generate = async function() {
+      const messageEl = document.getElementById("message");
+      const overlay = document.getElementById("overlay");
+      const errorEl = document.getElementById("error");
 
-    // Fetch the message
-    async function generate() {
       messageEl.textContent = "Receiving transmission…";
       overlay.classList.add("show");
-      errorEl.textContent = "";
 
       try {
         const res = await fetch("/api/helia");
@@ -143,6 +144,7 @@
 
         if (data.message) {
           messageEl.textContent = data.message;
+          errorEl.textContent = "";
         } else {
           messageEl.textContent = "Helia is recharging. Try again soon.";
         }
@@ -153,14 +155,12 @@
       }
     }
 
-    // Close modal
-    function closeModal() { overlay.classList.remove("show"); }
+    window.closeModal = function() {
+      document.getElementById("overlay").classList.remove("show");
+    }
 
-    // Event listeners
-    receiveBtn.addEventListener("click", generate);
-    closeBtn.addEventListener("click", closeModal);
-    overlay.addEventListener("click", closeModal);
-    overlay.querySelector(".message-card").addEventListener("click", e => e.stopPropagation());
+    // Click outside modal closes it
+    document.getElementById("overlay").addEventListener("click", closeModal);
 
     sdk.actions.ready();
   </script>
