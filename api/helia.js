@@ -1,4 +1,4 @@
-// /api/helia.js
+// File: api/helia.js
 export default async function handler(req, res) {
   try {
     // Only allow GET requests
@@ -6,26 +6,25 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: "Method not allowed" });
     }
 
-    // Read API key from environment variable
+    // Read OpenAI key from Vercel environment variable
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return res.status(500).json({ error: "Missing OpenAI API key" });
     }
 
-    // --- Define the prompts ---
+    // ----- PROMPT DEFINITIONS -----
     const systemPrompt = `
-You are Helia, a friendly, confident alien broadcasting brief daily transmissions to Farcaster users.
-Your tone is clever, warm, and lightly "based" in the Farcaster sense — self-aware, optimistic, and grounded.
-
+You are Helia, a friendly alien broadcasting brief daily transmissions to Farcaster users.
+Tone: clever, warm, slightly "based", self-aware, optimistic, grounded.
 Rules:
-- Respond with exactly one sentence
-- Keep it under 20 words
+- Exactly one sentence
+- Under 20 words
 - No emojis
 - No hashtags
 - No markdown
-- Do not mention AI, OpenAI, or ChatGPT
+- Do not mention AI or ChatGPT
 - Avoid clichés
-- Make it feel like a daily message someone would enjoy sharing
+- Feel like a daily shareable message
 `.trim();
 
     const userPrompt = `
@@ -33,7 +32,7 @@ I am a Farcaster user who loves aliens and internet culture.
 Give me a daily affirmation, motivation, or lightly "based" cosmic insight that feels thoughtful but playful.
 `.trim();
 
-    // --- Call OpenAI API ---
+    // ----- CALL OPENAI -----
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -63,11 +62,10 @@ Give me a daily affirmation, motivation, or lightly "based" cosmic insight that 
       return res.status(500).json({ error: "No message generated" });
     }
 
-    // Return JSON with just the message
+    // Return just the text
     res.status(200).json({ message });
 
   } catch (err) {
-    console.error("Helia API error:", err);
     res.status(500).json({ error: err.message });
   }
 }
