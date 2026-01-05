@@ -1,151 +1,187 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Helia’s Cosmic Greetings</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Helia’s Cosmic Greetings</title>
 
-    <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling","action":{"type":"launch_miniapp","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
+<meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling","action":{"type":"launch_miniapp","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
 
-    <meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling","action":{"type":"launch_frame","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
+<meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling","action":{"type":"launch_frame","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
 
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-      body {
-        background-color: #020816;
-        color: #f5f5ff;
-        font-family: system-ui, sans-serif;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        padding: 16px;
-      }
+  body {
+    background: #020816;
+    color: #f5f5ff;
+    font-family: system-ui, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-      .app {
-        max-width: 420px;
-        width: 100%;
-        text-align: center;
-      }
+  .app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    text-align: center;
+  }
 
-      h1 {
-        font-size: 1.6rem;
-        margin-bottom: 6px;
-      }
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
 
-      .subtitle {
-        font-size: 0.95rem;
-        opacity: 0.85;
-        margin-bottom: 14px;
-      }
+  .subtitle {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    margin-bottom: 14px;
+  }
 
-      img {
-        max-width: 180px;
-        width: 100%;
-        margin: 12px auto 16px;
-        display: block;
-      }
+  img {
+    width: 180px;
+    max-width: 60%;
+    margin-bottom: 12px;
+  }
 
-      .message-card {
-        background: linear-gradient(180deg, #142044, #0d162f);
-        border-radius: 18px;
-        padding: 18px;
-        border: 1px solid rgba(255,255,255,0.15);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-        margin-bottom: 16px;
-      }
+  /* Bottom fixed button */
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 16px 18px;
+    background: linear-gradient(to top, #020816 60%, transparent);
+  }
 
-      .message-label {
-        font-size: 0.75rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        opacity: 0.7;
-        margin-bottom: 8px;
-      }
+  button {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    display: block;
+    background: #27e0a3;
+    color: #04101b;
+    border: none;
+    border-radius: 999px;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
 
-      .message-text {
-        font-size: 1.05rem;
-        line-height: 1.45;
-        font-weight: 500;
-      }
+  button:active {
+    transform: scale(0.98);
+  }
 
-      button {
-        background: #27e0a3;
-        color: #04101b;
-        border: none;
-        border-radius: 999px;
-        padding: 11px 22px;
-        font-size: 0.95rem;
-        font-weight: 600;
-        cursor: pointer;
-        margin: 12px auto;
-        display: block;
-      }
+  /* Modal */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
 
-      button:active {
-        transform: scale(0.98);
-      }
-    </style>
-  </head>
+  .overlay.show {
+    display: flex;
+  }
 
-  <body>
-    <div class="app">
-      <h1 id="holiday-title">Cosmic Greetings from Helia</h1>
-      <div class="subtitle">A daily interstellar transmission</div>
+  .message-card {
+    background: linear-gradient(180deg, #142044, #0d162f);
+    border-radius: 18px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.15);
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
 
-      <img src="alien.png" alt="Helia the Alien" />
+  .message-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+    margin-bottom: 10px;
+  }
 
-      <!-- Message is now the focal point -->
-      <div class="message-card">
-        <div class="message-label">Today’s Transmission</div>
-        <div id="text" class="message-text">
-          Tap below to receive today’s message.
-        </div>
-      </div>
+  .message-text {
+    font-size: 1.05rem;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+</style>
+</head>
 
-      <button onclick="generate()">Receive New Transmission</button>
+<body>
+  <div class="app">
+    <h1 id="holiday-title">Cosmic Greetings from Helia</h1>
+    <div class="subtitle">A daily interstellar transmission</div>
+    <img src="alien.png" alt="Helia the Alien" />
+  </div>
+
+  <!-- Modal -->
+  <div id="overlay" class="overlay" onclick="closeModal()">
+    <div class="message-card" onclick="event.stopPropagation()">
+      <div class="message-label">Today’s Transmission</div>
+      <div id="message" class="message-text"></div>
     </div>
+  </div>
 
-    <script type="module">
-      import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
+  <!-- Bottom button -->
+  <div class="bottom-bar">
+    <button onclick="generate()">Receive Transmission</button>
+  </div>
 
-      function getHolidayOrWeekday() {
-        const d = new Date();
-        const month = d.getMonth() + 1;
-        const day = d.getDate();
-        const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
+  <script type="module">
+    import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
-        if (month === 1 && day === 1) return "New Year";
-        if (month === 2 && day === 14) return "Valentine's Day";
-        if (month === 7 && day === 4) return "Independence Day";
-        if (month === 10 && day === 31) return "Halloween";
-        if (month === 12 && day === 25) return "Christmas";
+    function getHolidayOrWeekday() {
+      const d = new Date();
+      const month = d.getMonth() + 1;
+      const day = d.getDate();
+      const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
 
-        return weekday;
-      }
+      if (month === 1 && day === 1) return "New Year";
+      if (month === 2 && day === 14) return "Valentine's Day";
+      if (month === 7 && day === 4) return "Independence Day";
+      if (month === 10 && day === 31) return "Halloween";
+      if (month === 12 && day === 25) return "Christmas";
 
-      document.getElementById("holiday-title").textContent =
-        "Happy " + getHolidayOrWeekday() + " from Helia";
+      return weekday;
+    }
 
-      const messages = [
-        "Helia says: Even stars need darkness to shine — your glow is coming online.",
-        "Transmission from Helia: You are stardust with purpose. Proceed boldly.",
-        "Helia beams: Tiny cosmic steps still move you across galaxies.",
-        "Helia whispers: Your orbit is your own — no need to match anyone else’s trajectory.",
-        "Incoming signal: You’re more powerful than a supernova on its best day.",
-        "Helia notes: Curiosity is your hyperdrive — follow it.",
-        "Cosmic ping: Your energy field is stabilizing beautifully. Keep going.",
-        "Helia transmits: You don’t need to be perfect — just in motion.",
-        "Star-coded message: You are expanding in all the right directions.",
-        "Helia reminds you: Even meteors take breaks. Rest is part of the mission."
-      ];
+    document.getElementById("holiday-title").textContent =
+      "Happy " + getHolidayOrWeekday() + " from Helia";
 
-      window.generate = function () {
-        const msg = messages[Math.floor(Math.random() * messages.length)];
-        document.getElementById("text").textContent = msg;
-      };
+    const messages = [
+      "Helia says: Even stars need darkness to shine — your glow is coming online.",
+      "Transmission from Helia: You are stardust with purpose. Proceed boldly.",
+      "Helia beams: Tiny cosmic steps still move you across galaxies.",
+      "Helia whispers: Your orbit is your own — no need to match anyone else’s trajectory.",
+      "Incoming signal: You’re more powerful than a supernova on its best day.",
+      "Helia notes: Curiosity is your hyperdrive — follow it.",
+      "Cosmic ping: Your energy field is stabilizing beautifully. Keep going.",
+      "Helia transmits: You don’t need to be perfect — just in motion.",
+      "Star-coded message: You are expanding in all the right directions.",
+      "Helia reminds you: Even meteors take breaks. Rest is part of the mission."
+    ];
 
-      sdk.actions.ready();
-    </script>
-  </body>
+    window.generate = function () {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById("message").textContent = msg;
+      document.getElementById("overlay").classList.add("show");
+    };
+
+    window.closeModal = function () {
+      document.getElementById("overlay").classList.remove("show");
+    };
+
+    sdk.actions.ready();
+  </script>
+</body>
 </html>
