@@ -18,10 +18,12 @@
     font-family: system-ui, sans-serif;
     height: 100vh;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   .app {
-    height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -53,7 +55,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 14px 16px 18px;
+    padding: 14px 16px 4px;
     background: linear-gradient(to top, #020816 60%, transparent);
   }
 
@@ -114,6 +116,15 @@
     line-height: 1.45;
     font-weight: 500;
   }
+
+  /* Error display */
+  .error-box {
+    color: #f87171;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 4px 12px;
+    margin-bottom: 4px;
+  }
 </style>
 </head>
 
@@ -128,7 +139,7 @@
   <div id="overlay" class="overlay" onclick="closeModal()">
     <div class="message-card" onclick="event.stopPropagation()">
       <div class="message-label">Today’s Transmission</div>
-      <div id="message" class="message-text"></div>
+      <div id="message" class="message-text">Receiving Transmission…</div>
     </div>
   </div>
 
@@ -137,19 +148,52 @@
     <button onclick="generate()">Receive Transmission</button>
   </div>
 
+  <!-- Error box -->
+  <div id="error-box" class="error-box"></div>
+
   <script type="module">
     import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
+    function getHolidayOrWeekday() {
+      const d = new Date();
+      const month = d.getMonth() + 1;
+      const day = d.getDate();
+      const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
+
+      if (month === 1 && day === 1) return "New Year";
+      if (month === 2 && day === 14) return "Valentine's Day";
+      if (month === 7 && day === 4) return "Independence Day";
+      if (month === 10 && day === 31) return "Halloween";
+      if (month === 12 && day === 25) return "Christmas";
+
+      return weekday;
+    }
+
+    document.getElementById("holiday-title").textContent =
+      "Happy " + getHolidayOrWeekday() + " from Helia";
+
     async function generate() {
+      const overlay = document.getElementById("overlay");
+      const messageEl = document.getElementById("message");
+      const errorBox = document.getElementById("error-box");
+
+      // Clear previous error
+      errorBox.textContent = "";
+
+      // Show overlay and loading
+      messageEl.textContent = "Receiving Transmission…";
+      overlay.classList.add("show");
+
       try {
         const res = await fetch('/api/helia');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        document.getElementById("message").textContent = data.message || "Helia is recharging. Try again soon.";
+        messageEl.textContent = data.message || "Helia is recharging. Try again soon.";
       } catch (err) {
-        document.getElementById("message").textContent = "Error: Could not reach Helia.";
+        messageEl.textContent = "Helia is recharging. Try again soon.";
+        errorBox.textContent = "Error: " + err.message;
         console.error(err);
       }
-      document.getElementById("overlay").classList.add("show");
     }
 
     function closeModal() {
