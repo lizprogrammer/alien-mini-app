@@ -5,101 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Helia’s Cosmic Greetings</title>
 
-    <!-- CRITICAL: Farcaster Mini App Embed Meta Tag -->
-    <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling ✨","action":{"type":"launch_miniapp","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
+    <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling","action":{"type":"launch_miniapp","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
 
-    <!-- For backward compatibility -->
-    <meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling ✨","action":{"type":"launch_frame","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
+    <meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling","action":{"type":"launch_frame","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
 
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
+
       body {
         background-color: #020816;
         color: #f5f5ff;
         font-family: system-ui, sans-serif;
-        text-align: center;
         min-height: 100vh;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         padding: 16px;
       }
-      h1 { font-size: 1.5rem; margin-bottom: 8px; }
-      p { font-size: 0.9rem; margin-bottom: 12px; opacity: 0.9; }
-      img { max-width: 180px; width: 100%; margin: 12px auto; display: block; }
+
+      .app {
+        max-width: 420px;
+        width: 100%;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+        margin-bottom: 6px;
+      }
+
+      .subtitle {
+        font-size: 0.95rem;
+        opacity: 0.85;
+        margin-bottom: 14px;
+      }
+
+      img {
+        max-width: 180px;
+        width: 100%;
+        margin: 12px auto 16px;
+        display: block;
+      }
+
+      .message-card {
+        background: linear-gradient(180deg, #142044, #0d162f);
+        border-radius: 18px;
+        padding: 18px;
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+        margin-bottom: 16px;
+      }
+
+      .message-label {
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.7;
+        margin-bottom: 8px;
+      }
+
+      .message-text {
+        font-size: 1.05rem;
+        line-height: 1.45;
+        font-weight: 500;
+      }
+
       button {
         background: #27e0a3;
         color: #04101b;
         border: none;
         border-radius: 999px;
-        padding: 10px 20px;
+        padding: 11px 22px;
         font-size: 0.95rem;
         font-weight: 600;
         cursor: pointer;
         margin: 12px auto;
         display: block;
       }
-      .card {
-        background: #111a2e;
-        border-radius: 16px;
-        padding: 14px;
-        margin: 12px auto 0;
-        border: 1px solid rgba(255,255,255,0.1);
-        max-width: 400px;
-      }
-      .card h3 { font-size: 1rem; line-height: 1.4; font-weight: 500; }
 
-      @media (min-height: 600px) {
-        h1 { font-size: 2rem; margin-bottom: 12px; }
-        p { font-size: 1rem; margin-bottom: 16px; }
-        img { max-width: 240px; margin: 16px auto; }
-        button { padding: 12px 24px; font-size: 1rem; margin: 16px auto; }
-        .card { padding: 16px; margin: 16px auto 0; }
-        .card h3 { font-size: 1.1rem; }
+      button:active {
+        transform: scale(0.98);
       }
     </style>
   </head>
 
   <body>
-    <div>
-      <h1 id="holiday-title">👽 Cosmic Greetings from Helia</h1>
-      <p>Helia beams you a fresh transmission of interstellar encouragement.</p>
+    <div class="app">
+      <h1 id="holiday-title">Cosmic Greetings from Helia</h1>
+      <div class="subtitle">A daily interstellar transmission</div>
 
       <img src="alien.png" alt="Helia the Alien" />
 
-      <button onclick="generate()">✨ Receive Transmission</button>
-
-      <div id="card" class="card" style="display:none;">
-        <h3 id="text"></h3>
+      <!-- Message is now the focal point -->
+      <div class="message-card">
+        <div class="message-label">Today’s Transmission</div>
+        <div id="text" class="message-text">
+          Tap below to receive today’s message.
+        </div>
       </div>
+
+      <button onclick="generate()">Receive New Transmission</button>
     </div>
 
-    <!-- CRITICAL: Load Farcaster Mini App SDK -->
     <script type="module">
       import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
-      // --- Detect Holiday or Day of Week ---
       function getHolidayOrWeekday() {
         const d = new Date();
         const month = d.getMonth() + 1;
         const day = d.getDate();
         const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
 
-        // Fixed-date holidays
         if (month === 1 && day === 1) return "New Year";
         if (month === 2 && day === 14) return "Valentine's Day";
         if (month === 7 && day === 4) return "Independence Day";
         if (month === 10 && day === 31) return "Halloween";
         if (month === 12 && day === 25) return "Christmas";
 
-        // Default fallback: weekday greeting
         return weekday;
       }
 
       document.getElementById("holiday-title").textContent =
-        "👽 Happy " + getHolidayOrWeekday() + " from Helia!";
+        "Happy " + getHolidayOrWeekday() + " from Helia";
 
-      // --- Alien-Themed Inspirational Messages ---
       const messages = [
         "Helia says: Even stars need darkness to shine — your glow is coming online.",
         "Transmission from Helia: You are stardust with purpose. Proceed boldly.",
@@ -109,17 +136,15 @@
         "Helia notes: Curiosity is your hyperdrive — follow it.",
         "Cosmic ping: Your energy field is stabilizing beautifully. Keep going.",
         "Helia transmits: You don’t need to be perfect — just in motion.",
-        "Star‑coded message: You are expanding in all the right directions.",
+        "Star-coded message: You are expanding in all the right directions.",
         "Helia reminds you: Even meteors take breaks. Rest is part of the mission."
       ];
 
       window.generate = function () {
         const msg = messages[Math.floor(Math.random() * messages.length)];
         document.getElementById("text").textContent = msg;
-        document.getElementById("card").style.display = "block";
       };
 
-      // CRITICAL: Tell Farcaster the app is ready
       sdk.actions.ready();
     </script>
   </body>
