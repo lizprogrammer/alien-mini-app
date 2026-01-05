@@ -29,22 +29,11 @@
     text-align: center;
   }
 
-  h1 {
-    font-size: 1.6rem;
-    margin-bottom: 6px;
-  }
+  h1 { font-size: 1.6rem; margin-bottom: 6px; }
 
-  .subtitle {
-    font-size: 0.95rem;
-    opacity: 0.85;
-    margin-bottom: 14px;
-  }
+  .subtitle { font-size: 0.95rem; opacity: 0.85; margin-bottom: 14px; }
 
-  img {
-    width: 180px;
-    max-width: 60%;
-    margin-bottom: 12px;
-  }
+  img { width: 180px; max-width: 60%; margin-bottom: 12px; }
 
   /* Bottom fixed button */
   .bottom-bar {
@@ -54,6 +43,7 @@
     right: 0;
     padding: 14px 16px 18px;
     background: linear-gradient(to top, #020816 60%, transparent);
+    text-align: center;
   }
 
   button {
@@ -71,9 +61,7 @@
     cursor: pointer;
   }
 
-  button:active {
-    transform: scale(0.98);
-  }
+  button:active { transform: scale(0.98); }
 
   /* Modal */
   .overlay {
@@ -86,9 +74,7 @@
     padding: 20px;
   }
 
-  .overlay.show {
-    display: flex;
-  }
+  .overlay.show { display: flex; }
 
   .message-card {
     background: linear-gradient(180deg, #142044, #0d162f);
@@ -108,19 +94,10 @@
     margin-bottom: 10px;
   }
 
-  .message-text {
-    font-size: 1.05rem;
-    line-height: 1.45;
-    font-weight: 500;
-  }
+  .message-text { font-size: 1.05rem; line-height: 1.45; font-weight: 500; }
 
   /* Error message */
-  #error {
-    color: #ff7777;
-    font-size: 0.85rem;
-    text-align: center;
-    margin-top: 8px;
-  }
+  #error { color: #ff7777; font-size: 0.85rem; margin-top: 8px; }
 </style>
 </head>
 
@@ -135,11 +112,11 @@
   <div id="overlay" class="overlay" onclick="closeModal()">
     <div class="message-card" onclick="event.stopPropagation()">
       <div class="message-label">Today’s Transmission</div>
-      <div id="message" class="message-text">Receiving transmission…</div>
+      <div id="message" class="message-text">Loading…</div>
     </div>
   </div>
 
-  <!-- Bottom button -->
+  <!-- Bottom button + error -->
   <div class="bottom-bar">
     <button onclick="generate()">Receive Transmission</button>
     <div id="error"></div>
@@ -148,6 +125,7 @@
   <script type="module">
     import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
+    // Holiday/weekday logic
     function getHolidayOrWeekday() {
       const d = new Date();
       const month = d.getMonth() + 1;
@@ -164,6 +142,7 @@
     document.getElementById("holiday-title").textContent =
       "Happy " + getHolidayOrWeekday() + " from Helia";
 
+    // Button click handler
     async function generate() {
       const messageEl = document.getElementById("message");
       const overlay = document.getElementById("overlay");
