@@ -29,24 +29,12 @@
     text-align: center;
   }
 
-  h1 {
-    font-size: 1.6rem;
-    margin-bottom: 6px;
-  }
+  h1 { font-size: 1.6rem; margin-bottom: 6px; }
 
-  .subtitle {
-    font-size: 0.95rem;
-    opacity: 0.85;
-    margin-bottom: 14px;
-  }
+  .subtitle { font-size: 0.95rem; opacity: 0.85; margin-bottom: 14px; }
 
-  img {
-    width: 180px;
-    max-width: 60%;
-    margin-bottom: 12px;
-  }
+  img { width: 180px; max-width: 60%; margin-bottom: 12px; }
 
-  /* Bottom fixed button */
   .bottom-bar {
     position: fixed;
     bottom: 0;
@@ -71,11 +59,8 @@
     cursor: pointer;
   }
 
-  button:active {
-    transform: scale(0.98);
-  }
+  button:active { transform: scale(0.98); }
 
-  /* Modal */
   .overlay {
     position: fixed;
     inset: 0;
@@ -86,9 +71,7 @@
     padding: 20px;
   }
 
-  .overlay.show {
-    display: flex;
-  }
+  .overlay.show { display: flex; }
 
   .message-card {
     position: relative;
@@ -109,13 +92,8 @@
     margin-bottom: 10px;
   }
 
-  .message-text {
-    font-size: 1.05rem;
-    line-height: 1.45;
-    font-weight: 500;
-  }
+  .message-text { font-size: 1.05rem; line-height: 1.45; font-weight: 500; }
 
-  /* Close button */
   .close-btn {
     position: absolute;
     top: 10px;
@@ -129,17 +107,9 @@
     padding: 0;
   }
 
-  .close-btn:active {
-    transform: scale(0.9);
-  }
+  .close-btn:active { transform: scale(0.9); }
 
-  /* Error message */
-  #error {
-    color: #ff7777;
-    font-size: 0.85rem;
-    text-align: center;
-    margin-top: 8px;
-  }
+  #error { color: #ff7777; font-size: 0.85rem; text-align: center; margin-top: 8px; }
 </style>
 </head>
 
@@ -150,16 +120,14 @@
     <img src="alien.png" alt="Helia the Alien" />
   </div>
 
-  <!-- Modal -->
-  <div id="overlay" class="overlay" onclick="closeModal()">
-    <div class="message-card" onclick="event.stopPropagation()">
+  <div id="overlay" class="overlay">
+    <div class="message-card">
       <button class="close-btn" onclick="closeModal()">×</button>
       <div class="message-label">Today’s Transmission</div>
       <div id="message" class="message-text">Loading…</div>
     </div>
   </div>
 
-  <!-- Bottom button -->
   <div class="bottom-bar">
     <button onclick="generate()">Receive Transmission</button>
     <div id="error"></div>
@@ -168,23 +136,11 @@
   <script type="module">
     import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
 
-    function getHolidayOrWeekday() {
-      const d = new Date();
-      const month = d.getMonth() + 1;
-      const day = d.getDate();
-      const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
-      if (month === 1 && day === 1) return "New Year";
-      if (month === 2 && day === 14) return "Valentine's Day";
-      if (month === 7 && day === 4) return "Independence Day";
-      if (month === 10 && day === 31) return "Halloween";
-      if (month === 12 && day === 25) return "Christmas";
-      return weekday;
-    }
-
     document.getElementById("holiday-title").textContent =
-      "Happy " + getHolidayOrWeekday() + " from Helia";
+      "Happy " + new Date().toLocaleDateString("en-US", { weekday: "long" }) + " from Helia";
 
-    async function generate() {
+    // Attach globally so Farcaster can call it
+    window.generate = async function() {
       const messageEl = document.getElementById("message");
       const overlay = document.getElementById("overlay");
       const errorEl = document.getElementById("error");
@@ -211,9 +167,12 @@
       }
     }
 
-    function closeModal() {
+    window.closeModal = function() {
       document.getElementById("overlay").classList.remove("show");
     }
+
+    // Click outside modal closes it
+    document.getElementById("overlay").addEventListener("click", closeModal);
 
     sdk.actions.ready();
   </script>
