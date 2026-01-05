@@ -1,206 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Helia’s Cosmic Greetings</title>
-
-<meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling","action":{"type":"launch_miniapp","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
-
-<meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien.png","button":{"title":"Greetings Earthling","action":{"type":"launch_frame","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien.png","splashBackgroundColor":"#39FF14"}}}' />
-
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: #020816;
-    color: #f5f5ff;
-    font-family: system-ui, sans-serif;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .app {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    text-align: center;
-  }
-
-  h1 {
-    font-size: 1.6rem;
-    margin-bottom: 6px;
-  }
-
-  .subtitle {
-    font-size: 0.95rem;
-    opacity: 0.85;
-    margin-bottom: 14px;
-  }
-
-  img {
-    width: 180px;
-    max-width: 60%;
-    margin-bottom: 12px;
-  }
-
-  /* Bottom fixed button */
-  .bottom-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 14px 16px 4px;
-    background: linear-gradient(to top, #020816 60%, transparent);
-  }
-
-  button {
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-    display: block;
-    background: #27e0a3;
-    color: #04101b;
-    border: none;
-    border-radius: 999px;
-    padding: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-
-  button:active {
-    transform: scale(0.98);
-  }
-
-  /* Modal */
-  .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  .overlay.show {
-    display: flex;
-  }
-
-  .message-card {
-    background: linear-gradient(180deg, #142044, #0d162f);
-    border-radius: 18px;
-    padding: 20px;
-    border: 1px solid rgba(255,255,255,0.15);
-    max-width: 360px;
-    width: 100%;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  }
-
-  .message-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    opacity: 0.7;
-    margin-bottom: 10px;
-  }
-
-  .message-text {
-    font-size: 1.05rem;
-    line-height: 1.45;
-    font-weight: 500;
-  }
-
-  /* Error display */
-  .error-box {
-    color: #f87171;
-    font-size: 0.85rem;
-    text-align: center;
-    padding: 4px 12px;
-    margin-bottom: 4px;
-  }
-</style>
-</head>
-
-<body>
-  <div class="app">
-    <h1 id="holiday-title">Cosmic Greetings from Helia</h1>
-    <div class="subtitle">A daily interstellar transmission</div>
-    <img src="alien.png" alt="Helia the Alien" />
-  </div>
-
-  <!-- Modal -->
-  <div id="overlay" class="overlay" onclick="closeModal()">
-    <div class="message-card" onclick="event.stopPropagation()">
-      <div class="message-label">Today’s Transmission</div>
-      <div id="message" class="message-text">Receiving Transmission…</div>
-    </div>
-  </div>
-
-  <!-- Bottom button -->
-  <div class="bottom-bar">
-    <button onclick="generate()">Receive Transmission</button>
-  </div>
-
-  <!-- Error box -->
-  <div id="error-box" class="error-box"></div>
-
-  <script type="module">
-    import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
-
-    function getHolidayOrWeekday() {
-      const d = new Date();
-      const month = d.getMonth() + 1;
-      const day = d.getDate();
-      const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
-
-      if (month === 1 && day === 1) return "New Year";
-      if (month === 2 && day === 14) return "Valentine's Day";
-      if (month === 7 && day === 4) return "Independence Day";
-      if (month === 10 && day === 31) return "Halloween";
-      if (month === 12 && day === 25) return "Christmas";
-
-      return weekday;
+// /api/helia.js
+export default async function handler(req, res) {
+  try {
+    // Only allow GET requests
+    if (req.method !== "GET") {
+      return res.status(405).json({ error: "Method not allowed" });
     }
 
-    document.getElementById("holiday-title").textContent =
-      "Happy " + getHolidayOrWeekday() + " from Helia";
-
-    async function generate() {
-      const overlay = document.getElementById("overlay");
-      const messageEl = document.getElementById("message");
-      const errorBox = document.getElementById("error-box");
-
-      // Clear previous error
-      errorBox.textContent = "";
-
-      // Show overlay and loading
-      messageEl.textContent = "Receiving Transmission…";
-      overlay.classList.add("show");
-
-      try {
-        const res = await fetch('/api/helia');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        messageEl.textContent = data.message || "Helia is recharging. Try again soon.";
-      } catch (err) {
-        messageEl.textContent = "Helia is recharging. Try again soon.";
-        errorBox.textContent = "Error: " + err.message;
-        console.error(err);
-      }
+    // Read API key from environment variable
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ error: "Missing OpenAI API key" });
     }
 
-    function closeModal() {
-      document.getElementById("overlay").classList.remove("show");
+    // --- Define the prompts ---
+    const systemPrompt = `
+You are Helia, a friendly, confident alien broadcasting brief daily transmissions to Farcaster users.
+Your tone is clever, warm, and lightly "based" in the Farcaster sense — self-aware, optimistic, and grounded.
+
+Rules:
+- Respond with exactly one sentence
+- Keep it under 20 words
+- No emojis
+- No hashtags
+- No markdown
+- Do not mention AI, OpenAI, or ChatGPT
+- Avoid clichés
+- Make it feel like a daily message someone would enjoy sharing
+`.trim();
+
+    const userPrompt = `
+I am a Farcaster user who loves aliens and internet culture.
+Give me a daily affirmation, motivation, or lightly "based" cosmic insight that feels thoughtful but playful.
+`.trim();
+
+    // --- Call OpenAI API ---
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.9,
+        max_tokens: 60,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      return res.status(500).json({ error: errorText });
     }
 
-    sdk.actions.ready();
-  </script>
-</body>
-</html>
+    const data = await response.json();
+    const message = data.choices?.[0]?.message?.content?.trim();
+
+    if (!message) {
+      return res.status(500).json({ error: "No message generated" });
+    }
+
+    // Return JSON with just the message
+    res.status(200).json({ message });
+
+  } catch (err) {
+    console.error("Helia API error:", err);
+    res.status(500).json({ error: err.message });
+  }
+}
