@@ -1,6 +1,6 @@
 // File: api/helia.js
-export default async function handler(req, res) {
-  // Allow cross-origin requests from any origin (needed for Farcaster iframe)
+module.exports = async function handler(req, res) {
+  // Allow cross-origin requests from any origin (Farcaster iframe)
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   try {
@@ -54,8 +54,12 @@ Give me a daily affirmation, motivation, or lightly "based" cosmic insight that 
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      return res.status(500).json({ error: errorText });
+      let errorMessage = "OpenAI API error";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error?.message || errorMessage;
+      } catch {}
+      return res.status(500).json({ error: errorMessage });
     }
 
     const data = await response.json();
@@ -71,4 +75,4 @@ Give me a daily affirmation, motivation, or lightly "based" cosmic insight that 
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-}
+};
