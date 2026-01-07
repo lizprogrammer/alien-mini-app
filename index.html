@@ -1,135 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Helia’s Cosmic Greetings</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Helia's Cosmic Greetings</title>
 
-<meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","button":{"title":"Greetings Earthling","action":{"type":"launch_miniapp","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","splashBackgroundColor":"#39FF14"}}}' />
-<meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","button":{"title":"Greetings Earthling","action":{"type":"launch_frame","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","splashBackgroundColor":"#39FF14"}}}' />
+  <!-- Farcaster Frame -->
+  <meta property="fc:frame" content="vNext" />
+  <meta property="fc:frame:image" content="https://alien-mini-app.vercel.app/alien-icon.png" />
+  <meta property="fc:frame:button:1" content="Greetings Earthling" />
+  <meta property="fc:frame:button:1:action" content="link" />
+  <meta property="fc:frame:button:1:target" content="https://alien-mini-app.vercel.app" />
 
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  <!-- Open Graph for social media preview -->
+  <meta property="og:title" content="Helia's Cosmic Greetings" />
+  <meta property="og:description" content="A daily interstellar transmission from Helia the Alien" />
+  <meta property="og:image" content="https://alien-mini-app.vercel.app/alien-icon.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-  body {
-    background: #020816;
-    color: #f5f5ff;
-    font-family: system-ui, sans-serif;
-    height: 100vh;
-    overflow: hidden;
-  }
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Helia's Cosmic Greetings" />
+  <meta name="twitter:description" content="A daily interstellar transmission from Helia the Alien" />
+  <meta name="twitter:image" content="https://alien-mini-app.vercel.app/alien-icon.png" />
 
-  .app {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 60px 16px 16px; /* more top space */
-    text-align: center;
-  }
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  h1 {
-    font-size: 2rem;      /* larger and more prominent */
-    font-weight: 700;
-    margin-bottom: 8px;
-    line-height: 1.2;
-  }
+    body {
+      background: #020816;
+      color: #f5f5ff;
+      font-family: system-ui, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-  .subtitle {
-    font-size: 1rem;      /* slightly bigger */
-    opacity: 0.85;
-    margin-bottom: 24px;  /* more space before icon */
-  }
+    .app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 60px 16px 16px;
+      text-align: center;
+    }
 
-  img {
-    width: 200px;
-    max-width: 60%;
-    margin-bottom: 32px;  /* bigger gap between icon and button/modal */
-  }
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
 
-  .bottom-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 14px 16px 18px;
-    background: linear-gradient(to top, #020816 60%, transparent);
-  }
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.85;
+      margin-bottom: 24px;
+    }
 
-  button {
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-    display: block;
-    background: #27e0a3;
-    color: #04101b;
-    border: none;
-    border-radius: 999px;
-    padding: 14px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.1s;
-  }
+    img {
+      width: 200px;
+      max-width: 60%;
+      margin-bottom: 32px;
+    }
 
-  button:active { transform: scale(0.97); }
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 14px 16px 18px;
+      background: linear-gradient(to top, #020816 60%, transparent);
+    }
 
-  .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
+    button {
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+      display: block;
+      background: #27e0a3;
+      color: #04101b;
+      border: none;
+      border-radius: 999px;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
 
-  .overlay.show { display: flex; }
+    button:active { transform: scale(0.97); }
 
-  .message-card {
-    background: linear-gradient(180deg, #142044, #0d162f);
-    border-radius: 18px;
-    padding: 22px;
-    border: 1px solid rgba(255,255,255,0.15);
-    max-width: 380px;
-    width: 100%;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-  .message-label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    opacity: 0.7;
-    margin-bottom: 12px;
-  }
+    .overlay.show { display: flex; }
 
-  .message-text {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    font-weight: 500;
-  }
+    .message-card {
+      background: linear-gradient(180deg, #142044, #0d162f);
+      border-radius: 18px;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,0.15);
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
 
-  #error {
-    color: #ff7777;
-    font-size: 0.85rem;
-    text-align: center;
-    margin-top: 8px;
-  }
-</style>
+    .message-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.7;
+      margin-bottom: 12px;
+    }
+
+    .message-text {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .close-btn {
+      background: rgba(39, 224, 163, 0.2);
+      color: #27e0a3;
+      margin-top: 16px;
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+
+    #error {
+      color: #ff7777;
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 8px;
+    }
+  </style>
 </head>
 
 <body>
   <div class="app">
     <h1 id="holiday-title">Cosmic Greetings from Helia</h1>
     <div class="subtitle">A daily interstellar transmission</div>
-    <img src="alien-icon.png" alt="Helia the Alien" />
+    <img src="https://alien-mini-app.vercel.app/alien-icon.png" alt="Helia the Alien" />
   </div>
 
   <div id="overlay" class="overlay">
     <div class="message-card">
-      <div class="message-label">Today’s Transmission</div>
+      <div class="message-label">Today's Transmission</div>
       <div id="message" class="message-text">Loading…</div>
+      <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
   </div>
 
@@ -138,9 +164,7 @@
     <div id="error"></div>
   </div>
 
-  <script type="module">
-    import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
-
+  <script>
     const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
     document.getElementById("holiday-title").textContent = "Happy " + today + " from Helia";
 
@@ -153,7 +177,7 @@
       overlay.classList.add("show");
 
       try {
-        const res = await fetch("/api/helia");
+        const res = await fetch("https://alien-mini-app.vercel.app/api/helia");
         console.log("Fetch status:", res.status);
         const data = await res.json();
         console.log("Data from API:", data);
@@ -175,9 +199,11 @@
       document.getElementById("overlay").classList.remove("show");
     }
 
-    document.getElementById("overlay").addEventListener("click", closeModal);
-
-    sdk.actions.ready();
+    document.getElementById("overlay").addEventListener("click", function(e) {
+      if (e.target === e.currentTarget) {
+        closeModal();
+      }
+    });
   </script>
 </body>
 </html>
