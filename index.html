@@ -161,7 +161,10 @@
     <div id="error"></div>
   </div>
 
-  <script>
+  <script type="module">
+    import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
+    sdk.actions.ready();
+
     const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
     document.getElementById("holiday-title").textContent = "Happy " + today + " from Helia";
 
