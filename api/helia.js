@@ -30,10 +30,35 @@ Rules:
 - Feel like a daily shareable message
 `.trim();
 
-    const userPrompt = `
-I am a Farcaster user who loves aliens and internet culture.
-Give me a daily affirmation, motivation, or lightly "based" cosmic insight that feels thoughtful but playful.
-`.trim();
+  const userPrompt = `
+  You are a cosmic guide for a Farcaster user who loves aliens and internet culture.
+  
+  Generate ONE of the following (rotate unpredictably):
+  - A daily affirmation with alien/cosmic flavor
+  - A motivational insight blending space themes with internet culture
+  - A "based" cosmic truth that's both profound and playful
+  - An alien transmission-style message about human potential
+  - A meme-able wisdom nugget from the galaxy's perspective
+  
+  VARIETY REQUIREMENTS:
+  - Vary length: sometimes 1 sentence, sometimes 2-3
+  - Rotate tone: sincere → ironic → mystical → absurdist → wholesome
+  - Mix references: alternate between space facts, internet slang, philosophy, sci-fi, and meditation
+  - Change format occasionally: use emojis sparingly but creatively, try different punctuation styles
+  - Shift perspective: speak AS an alien, ABOUT aliens, or FROM cosmic consciousness
+  
+  STYLE NOTES:
+  - Keep it genuine but never cringe
+  - "Based" means counterintuitive truth, not just edgy
+  - Internet culture = subtle references, not forced memes
+  - Thoughtful > trying too hard
+  
+  Examples of variety:
+  - "The void scrolls back, anon. What you seek is seeking you."
+  - "Alien anthropologists studied Earth for 3 months before realizing humans just do things. No plan. Liberating, honestly."
+  - "Your timeline is just one branch. In another universe, you already did the thing. 🛸"
+  - "gm from the Andromeda Council. They said post through the fear."
+  `.trim();
 
     // ----- CALL OPENAI -----
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
