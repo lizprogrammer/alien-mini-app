@@ -5,12 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Helia's Cosmic Greetings</title>
 
-  <!-- Farcaster Frame -->
-  <meta property="fc:frame" content="vNext" />
-  <meta property="fc:frame:image" content="https://alien-mini-app.vercel.app/alien-icon.png" />
-  <meta property="fc:frame:button:1" content="Greetings Earthling" />
-  <meta property="fc:frame:button:1:action" content="link" />
-  <meta property="fc:frame:button:1:target" content="https://alien-mini-app.vercel.app" />
+  <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","button":{"title":"Greetings Earthling","action":{"type":"launch_miniapp","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","splashBackgroundColor":"#39FF14"}}}' />
+  <meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","button":{"title":"Greetings Earthling","action":{"type":"launch_frame","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","splashBackgroundColor":"#39FF14"}}}' />
+
 
   <!-- Open Graph for social media preview -->
   <meta property="og:title" content="Helia's Cosmic Greetings" />
