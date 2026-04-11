@@ -13,6 +13,16 @@ module.exports = async function handler(req, res) {
       return res.status(500).json({ error: "Missing GROQ API key" });
     }
 
+    // Rotating cosmic fallback messages
+    const fallbackMessages = [
+      "You’re loved, you matter, and the universe is quietly arranging the next good thing.",
+      "The cosmos hasn’t misplaced you; something kind is already moving in your direction.",
+      "You are a bright point in the pattern, and the universe is still weaving around you."
+    ];
+
+    const getFallback = () =>
+      fallbackMessages[Math.floor(Math.random() * fallbackMessages.length)];
+
     // ----- PROMPTS -----
     const systemPrompt = `
 You are Helia, a friendly alien broadcasting brief daily transmissions to Farcaster users.
@@ -74,25 +84,32 @@ STYLE NOTES:
       }),
     });
 
+    // If Groq fails → return cosmic fallback
     if (!response.ok) {
-      let errorMessage = "Groq API error";
-      try {
-        const errorData = await response.json();
-        errorMessage = errorData.error?.message || errorMessage;
-      } catch {}
-      return res.status(500).json({ error: errorMessage });
+      return res.status(200).json({ message: getFallback() });
     }
 
     const data = await response.json();
     const message = data.choices?.[0]?.message?.content?.trim();
 
+    // If Groq returns nothing → fallback
     if (!message) {
-      return res.status(500).json({ error: "No message generated" });
+      return res.status(200).json({ message: getFallback() });
     }
 
+    // Success
     res.status(200).json({ message });
 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    // If something unexpected breaks → fallback
+    const fallbackMessages = [
+      "You’re loved, you matter, and the universe is quietly arranging the next good thing.",
+      "The cosmos hasn’t misplaced you; something kind is already moving in your direction.",
+      "You are a bright point in the pattern, and the universe is still weaving around you."
+    ];
+    const getFallback = () =>
+      fallbackMessages[Math.floor(Math.random() * fallbackMessages.length)];
+
+    res.status(200).json({ message: getFallback() });
   }
 };
