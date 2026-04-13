@@ -1,15 +1,19 @@
 {
   "frame": {
-    "name": "Alien App",
+    "name": "App",
     "version": "1",
     "iconUrl": "https://alien-mini.vercel.app/alien-icon.png",
-    "homeUrl": "https://alien-mini.vercel.app",
-    "subtitle": "Alien App",
-    "description": "Alien App",
+    "homeUrl": "https://alien-mini.vercel.app/",
+    "subtitle": "App",
+    "description": "App",
     "primaryCategory": "games",
+    "screenshotUrls": [
+      "https://alien-mini.vercel.app/alien-icon.png"
+    ],
+    "imageUrl": "https://alien-mini.vercel.app/alien-icon.png",
+    "heroImageUrl": "https://alien-mini.vercel.app/alien-icon.png",
     "splashImageUrl": "https://alien-mini.vercel.app/alien-icon.png",
     "splashBackgroundColor": "#39FF14",
-    "castShareUrl": "https://alien-mini.vercel.app",
     "ogImageUrl": "https://alien-mini.vercel.app/alien-icon.png"
   }
 }
