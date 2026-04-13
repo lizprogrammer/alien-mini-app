@@ -5,14 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Helia's Cosmic Greetings</title>
 
-  <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","button":{"title":"Greetings Earthling","action":{"type":"launch_miniapp","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","splashBackgroundColor":"#39FF14"}}}' />
-  <meta name="fc:frame" content='{"version":"1","imageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","button":{"title":"Greetings Earthling","action":{"type":"launch_frame","name":"Helia’s Cosmic Greetings","url":"https://alien-mini-app.vercel.app","splashImageUrl":"https://alien-mini-app.vercel.app/alien-icon.png","splashBackgroundColor":"#39FF14"}}}' />
+  <!-- Farcaster Miniapp Metadata -->
+  <meta name="fc:miniapp" content='{
+    "version":"1",
+    "imageUrl":"/alien-icon.png",
+    "button":{
+      "title":"Greetings Earthling",
+      "action":{
+        "type":"launch_miniapp",
+        "name":"Helia’s Cosmic Greetings",
+        "url":"/",
+        "splashImageUrl":"/alien-icon.png",
+        "splashBackgroundColor":"#39FF14"
+      }
+    }
+  }' />
 
+  <meta name="fc:frame" content='{
+    "version":"1",
+    "imageUrl":"/alien-icon.png",
+    "button":{
+      "title":"Greetings Earthling",
+      "action":{
+        "type":"launch_frame",
+        "name":"Helia’s Cosmic Greetings",
+        "url":"/",
+        "splashImageUrl":"/alien-icon.png",
+        "splashBackgroundColor":"#39FF14"
+      }
+    }
+  }' />
 
-  <!-- Open Graph for social media preview -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Helia's Cosmic Greetings" />
   <meta property="og:description" content="A daily interstellar transmission from Helia the Alien" />
-  <meta property="og:image" content="https://alien-mini-app.vercel.app/alien-icon.png" />
+  <meta property="og:image" content="/alien-icon.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
@@ -20,7 +47,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Helia's Cosmic Greetings" />
   <meta name="twitter:description" content="A daily interstellar transmission from Helia the Alien" />
-  <meta name="twitter:image" content="https://alien-mini-app.vercel.app/alien-icon.png" />
+  <meta name="twitter:image" content="/alien-icon.png" />
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -145,7 +172,7 @@
   <div class="app">
     <h1 id="holiday-title">Cosmic Greetings from Helia</h1>
     <div class="subtitle">A daily interstellar transmission</div>
-    <img src="https://alien-mini-app.vercel.app/alien-icon.png" alt="Helia the Alien" />
+    <img src="/alien-icon.png" alt="Helia the Alien" />
   </div>
 
   <div id="overlay" class="overlay">
@@ -177,10 +204,8 @@
       overlay.classList.add("show");
 
       try {
-        const res = await fetch("https://alien-mini-app.vercel.app/api/helia");
-        console.log("Fetch status:", res.status);
+        const res = await fetch("/api/helia");
         const data = await res.json();
-        console.log("Data from API:", data);
 
         if (data.message) {
           messageEl.textContent = data.message;
@@ -191,7 +216,6 @@
       } catch (err) {
         messageEl.textContent = "Helia is recharging. Try again soon.";
         errorEl.textContent = "Error: " + err.message;
-        console.error(err);
       }
     }
 
