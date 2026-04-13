@@ -1,0 +1,15 @@
+{
+  "frame": {
+    "name": "Alien App",
+    "version": "1",
+    "iconUrl": "https://alien-mini.vercel.app/alien-icon.png",
+    "homeUrl": "https://alien-mini.vercel.app",
+    "subtitle": "Alien App",
+    "description": "Alien App",
+    "primaryCategory": "games",
+    "splashImageUrl": "https://alien-mini.vercel.app/alien-icon.png",
+    "splashBackgroundColor": "#39FF14",
+    "castShareUrl": "https://alien-mini.vercel.app",
+    "ogImageUrl": "https://alien-mini.vercel.app/alien-icon.png"
+  }
+}
